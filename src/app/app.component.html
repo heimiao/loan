@@ -1,0 +1,105 @@
+<div style="padding:25px 0;">
+    <nz-card style="width:100%">
+        <form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24">本金</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                    <nz-input-group [nzAddOnAfter]="addAfter">
+                        <input formControlName="money" nz-input placeholder="贷款金额">
+                        <ng-template #addAfter>万</ng-template>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24">年限</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                    <nz-select style="width: 150px;" nzAllowClear nzPlaceHolder="统计期限" formControlName="years">
+                        <nz-option *ngFor="let option of filter.yearList" [nzLabel]="option.label" [nzValue]="option.value">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24">年利率</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                    <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+                        <ng-template #addOnBeforeTemplate>
+                            <nz-select style="width: 150px;" nzAllowClear nzPlaceHolder="请选择年利率" formControlName="rate">
+                                <nz-option *ngFor="let option of filter.rateList" [nzLabel]="option.label" [nzValue]="option.value">
+                                </nz-option>
+                            </nz-select>
+                        </ng-template>
+                        <input formControlName="rateResult" nz-input readonly>
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <nz-radio-group formControlName="loanType">
+                        <label nz-radio nzValue="0">等额本息</label>
+                        <label nz-radio nzValue="1">等额本金</label>
+                    </nz-radio-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control>
+                    <button nz-button nzType="primary">查询</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-card>
+
+    <nz-card style="width:100%">
+        <nz-tabset style="width: 100%;">
+            <nz-tab nzTitle="贷款详细">
+                <nz-table #basic [nzData]="loanDetailAray">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>月供利息</th>
+                            <th>月供本金</th>
+                            <th>月供总额</th>
+                            <th>剩余</th>
+                            <th>期次</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basic.data">
+                            <td>{{data.date}}</td>
+                            <td>{{data.monthlyInterest}}</td>
+                            <td>{{data.monthlyPrincipal}}</td>
+                            <td>{{data.monthlySupply}}</td>
+                            <td>{{data.surplusCost}}</td>
+                            <td>{{data.limit}}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <div id="loanDetaiPic"></div>
+                <div id="loanPercent"></div>
+            </nz-tab>
+            <nz-tab nzTitle="贷款统计">
+                <nz-table #basicTable [nzData]="loanAray">
+                    <thead>
+                        <tr>
+                            <th>贷款年数</th>
+                            <th>月供递减额</th>
+                            <th>月供金额</th>
+                            <th>总利息</th>
+                            <th>还款总额</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicTable.data">
+                            <td>{{data.year}}</td>
+                            <td>{{data.monthlyDiminish}}</td>
+                            <td>{{data.monthlySupply}}</td>
+                            <td>{{data.totalInterest}}</td>
+                            <td>{{data.totalMoney}}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <div id="loanPic"></div>
+            </nz-tab>
+        </nz-tabset>
+    </nz-card>
+</div>
